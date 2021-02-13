@@ -1,5 +1,6 @@
 const controller = require("../controllers/auth.controller");
 
+// function to control headers and login authentication
 module.exports = function (app) {
     app.use(function (req, res, next) {
        res.header(

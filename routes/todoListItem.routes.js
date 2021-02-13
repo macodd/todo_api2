@@ -2,6 +2,7 @@
 const controller = require("../controllers/todoListItem.controller");
 const authJwt = require("../middleware/authJwt");
 
+// function to return items of a specific todolist
 module.exports = function (app) {
     app.use(function (req, res, next) {
         res.header(

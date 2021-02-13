@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize('postgres://mcodd:Oakland2021@127.0.0.1:5433/todo');
 
+// database models to be exported
 const db = {
     Sequelize: Sequelize,
     sequelize: sequelize,

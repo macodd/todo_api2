@@ -8,6 +8,7 @@ verifyToken = function (req, res, next) {
     // get token from headers
     let token = req.headers["x-access-token"];
 
+    // return error if no token was passed
     if(!token) {
         // 403 : Forbidden
         return res.status(403).json({
@@ -15,6 +16,7 @@ verifyToken = function (req, res, next) {
         });
     }
 
+    // verify the token based on the secret key
     jwt.verify(token, config.secretAuthKey, function (err, decoded) {
         if (err) {
             // 401 : Unauthorized
@@ -27,6 +29,7 @@ verifyToken = function (req, res, next) {
     });
 }
 
+// auth header token
 const authJwt = {
     verifyToken: verifyToken,
 }

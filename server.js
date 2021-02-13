@@ -28,6 +28,7 @@ require('./routes/todoListItem.routes')(app);
 const PORT = 9000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
+// initialize a authenticate db user
 db.sequelize
     .authenticate()
     .then(() => {
@@ -37,7 +38,7 @@ db.sequelize
         console.log('Unable to connect:', err);
     });
 
-
+// sync user with db
 db.sequelize.sync({ force: true }).then(() => {
    console.log('Database & tables created');
 

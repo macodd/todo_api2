@@ -2,6 +2,7 @@
 const controller = require("../controllers/todoList.controller");
 const authJwt = require("../middleware/authJwt");
 
+// function to return todolists based on users id
 module.exports = function (app) {
     app.use(function (req, res, next) {
         res.header(
