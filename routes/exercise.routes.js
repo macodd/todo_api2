@@ -1,5 +1,5 @@
 // controller for todos list database
-const controller = require("../controllers/todoListItem.controller");
+const controller = require("../controllers/exercise.controller");
 const authJwt = require("../middleware/authJwt");
 
 // function to return items of a specific todolist
@@ -13,14 +13,14 @@ module.exports = function (app) {
     });
 
     // get a specific list item
-    app.get('/api/user/:userId/todos/:todoListId/item/:id', [authJwt.verifyToken], controller.getTodoListItem);
+    app.get('/api/user/:userId/workout/:workoutId/exercise/:id', [authJwt.verifyToken], controller.getExercise);
 
     // create a specific todoListItem into the specific list id
-    app.post('/api/user/:userId/todos/:todoListId/create', [authJwt.verifyToken], controller.createTodoListItem);
+    app.post('/api/user/:userId/workout/:workoutId/create', [authJwt.verifyToken], controller.createExercise);
 
     // update data on specific todoListItem
-    app.put('/api/user/:userId/todos/:todoListId/item/:id/update', [authJwt.verifyToken], controller.updateTodoListItem);
+    app.put('/api/user/:userId/workout/:workoutId/exercise/:id/update', [authJwt.verifyToken], controller.updateExercise);
 
     // delete todoListItem
-    app.delete('/api/user/:userId/todos/:todoListId/item/:id/delete', [authJwt.verifyToken], controller.deleteTodoListItem);
+    app.delete('/api/user/:userId/workout/:workoutId/exercise/:id/delete', [authJwt.verifyToken], controller.deleteExercise);
 }

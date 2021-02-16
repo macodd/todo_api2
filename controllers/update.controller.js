@@ -1,18 +1,22 @@
 const db = require('../models');
 
-const User = db.user;
+// models to be updated
 const Goal = db.goal;
 const Address = db.address;
 
-exports.newUserGoal = function (req, res) {
-    User.findOne({ where : { id : req.params.userId }}).then(
-        user => {
-            Goal.create({
+// update the goals of user
+exports.updateGoal = function (req, res) {
+    Goal.findOne({
+        where : {
+            id : req.params.userId
+        }
+    }).then(
+        goal => {
+            goal.update({
                 currentWeight : req.body.currentWeight,
                 goalWeight : req.body.goalWeight,
                 height : req.body.height,
                 goalType : req.body.goalType,
-                userId : user.id
             }).then(() => {
                 return res.status(200).json({
                     message: "Goal created"
@@ -26,20 +30,24 @@ exports.newUserGoal = function (req, res) {
     )
 }
 
-exports.newUserAddress = function (req, res) {
-    User.findOne({ where : { id : req.params.userId }}).then(
-        user => {
-            Address.create({
+// update the address of the user
+exports.updateAddress = function (req, res) {
+    Address.findOne({
+        where : {
+            id : req.params.userId
+        }
+    }).then(
+        address => {
+            address.update({
                 street : req.body.street,
                 city : req.body.city,
                 state : req.body.state,
                 country : req.body.country,
                 zipcode : req.body.zipcode,
-                userId : user.id
             }).then(() => {
                 return res.status(200).json({
-                    message: "address created"
-                })
+                    message: "address updated"
+                });
             },
                 err => {
                 return res.status(400).json({

@@ -1,11 +1,11 @@
 
 // user model for db
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, DataTypes) => {
     return sequelize.define("address", {
-        street : Sequelize.STRING,
-        city : Sequelize.STRING,
-        state : Sequelize.STRING,
-        country : Sequelize.STRING,
-        zipcode : Sequelize.STRING,
+        street : { type: DataTypes.STRING },
+        city : { type: DataTypes.STRING },
+        state : { type: DataTypes.STRING },
+        country : { type: DataTypes.STRING },
+        zipcode : { type: DataTypes.STRING },
     });
 };

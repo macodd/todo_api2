@@ -33,6 +33,7 @@ verifyToken = function (req, res, next) {
     });
 };
 
+// check if the user is admin
 isAdmin = (req, res, next) => {
     User.findByPk(req.userId).then((user) => {
         user.getRoles().then((roles) => {
@@ -49,6 +50,7 @@ isAdmin = (req, res, next) => {
     });
 };
 
+// check if the user is a trainer
 isTrainer = (req, res, next) => {
     User.findByPk(req.userId).then((user) => {
         user.getRoles().then((roles) => {
@@ -65,6 +67,7 @@ isTrainer = (req, res, next) => {
     });
 };
 
+// check if the user is either admin or trainer
 isTrainerOrAdmin = (req, res, next) => {
     User.findByPk(req.userId).then((user) => {
         user.getRoles().then((roles) => {

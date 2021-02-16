@@ -36,6 +36,6 @@ module.exports = function (app) {
     );
 
     // get all todos associated with the userId
-    app.get("/api/user/:userId", [authJwt.verifyToken], controller.getUserTodos);
+    app.get("/api/user/:userId", [authJwt.verifyToken], controller.userBoard);
 
 }

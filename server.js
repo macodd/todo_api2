@@ -6,9 +6,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 // encryption library
 var bcrypt = require('bcryptjs');
-
+// database models
 const db = require("./models");
-
+// role model for initializing database
 const Role = db.role;
 
 const app = express();
@@ -21,12 +21,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // routes
-require('./routes/auth.routes')(app);
-require('./routes/user.routes')(app);
-require('./routes/todoList.routes')(app);
-require('./routes/todoListItem.routes')(app);
-require('./routes/email-invite.route')(app);
-require('./routes/new-user.routes')(app);
+require('./routes/auth.routes')(app);  // login, signup
+require('./routes/user.routes')(app);  // user view
+require('./routes/workout.routes')(app);  // workouts
+require('./routes/exercise.routes')(app);  // exercises
+require('./routes/email-invite.route')(app);  // email invite
+require('./routes/update.routes')(app);  // new users
 
 // sets port and listens for requests
 const PORT = 9000;
@@ -68,5 +68,5 @@ function initial() {
 
 // home route
 app.get("/", function (req, res) {
-   res.json({"message": "Welcome to Todo-api's home page"});
+   res.json({ message: "Welcome to Todo-api's home page"});
 });

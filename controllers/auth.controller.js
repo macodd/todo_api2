@@ -9,11 +9,18 @@ const bcrypt = require('bcryptjs');
 // database operations (and, or,..)
 const Op = db.Sequelize.Op;
 
+// user and role models
 const User = db.user;
 const Role = db.role;
+const Address = db.address;
+const Goal = db.goal;
 
+// salt for hashing the password
+const SALT = 8;
+
+// signup function that creates a new user, a new address, and a new goal
 exports.signup = (req, res) => {
-    const salt = 8;
+
     // Save user to Database
     User.create({
         firstName: req.body.firstName,
@@ -21,7 +28,7 @@ exports.signup = (req, res) => {
         dob: req.body.dob,
         gender: req.body.gender,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, salt)
+        password: bcrypt.hashSync(req.body.password, SALT)
     })
     .then((user) => {
         if (req.body.roles) {
@@ -32,34 +39,44 @@ exports.signup = (req, res) => {
                     }
                 }
             }).then((roles) => {
-                user.setRoles(roles).then(() => {
-                    res.status(200).json({
-                        message: "User registered successfully"
-                    })
-                })
-            })
+                user.setRoles(roles);
+            });
         }
         else {
             // set user as 'user'
-            user.setRoles([1]).then(() => {
-                res.status(200).json({
-                    message: "User registered successfully"
-                })
-            })
+            user.setRoles([1]);
         }
+
+        Address.create({
+            userId: user.id
+        }).catch(err => {
+            res.status(500).json({ message: err.message })
+        });
+
+        Goal.create({
+            userId: user.id
+        }).catch(err => {
+            res.status(500).json({ message: err.message })
+        });
+
+        res.status(200).json({
+            message: "User created successfully"
+        });
     })
     .catch((err) => {
-        res.status(500).json({
-            message: err.message
-        })
+        res.status(500).json({ message: err.message })
     });
 }
 
 // login function
 exports.login = function (req, res) {
     // search for a user based on the email (unique)
-    User.findOne({ where : { email : req.body.email } })
-        .then((user) => {
+    User.findOne({
+        where : {
+            email : req.body.email
+        }
+    }).then(
+        user => {
             // if no user
             if(!user) {
                 return res.status(404).json({

@@ -1,13 +1,13 @@
 
 // roles to be assigned to users
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, DataTypes) => {
     return sequelize.define("roles", {
         id: {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
             primaryKey: true
         },
         name : {
-            type: Sequelize.STRING
+            type: DataTypes.STRING
         }
     })
 }

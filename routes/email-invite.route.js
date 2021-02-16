@@ -10,5 +10,6 @@ module.exports = function (app) {
         next();
     });
 
+    // email invite endpoint
     app.post("/api/user/:userId/invite", [authJwt.verifyToken], controller.invite);
 }

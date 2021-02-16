@@ -1,7 +1,11 @@
+// database models
 const db = require("../models");
+
+// Roles and user models
 const ROLES = db.ROLES;
 const User = db.user;
 
+// check for email already in use
 duplicateEmail = (req, res, next) => {
     User.findOne({
         where: {
@@ -18,6 +22,7 @@ duplicateEmail = (req, res, next) => {
     })
 }
 
+// checks for the existence of the role
 roleExists = (req, res, next) => {
     if (req.body.roles) {
         for (let i = 0; i < req.body.roles.length; i++) {
@@ -32,6 +37,7 @@ roleExists = (req, res, next) => {
     next();
 }
 
+// functions for backend validation
 const verifySignUp = {
     duplicateEmail: duplicateEmail,
     roleExists: roleExists
