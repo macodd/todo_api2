@@ -1,4 +1,5 @@
 const controller = require("../controllers/auth.controller");
+const { verifySignUp } = require("../middleware");
 
 // function to control headers and login authentication
 module.exports = function (app) {
@@ -9,6 +10,16 @@ module.exports = function (app) {
        );
        next();
     });
+
+    // signup endpoint
+    app.post(
+        "/api/auth/signup",
+        [
+            verifySignUp.duplicateEmail,
+            verifySignUp.roleExists
+        ],
+        controller.signup
+    );
 
     // login endpoint
     app.post("/api/auth/login", controller.login);

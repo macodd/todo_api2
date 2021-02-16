@@ -11,11 +11,29 @@ module.exports = function (app) {
         next();
     });
 
-    // all access endpoint (anon)
-    app.get("/api/all", controller.anonBoard);
+    // all access endpoint (all)
+    app.get("/api/all", controller.allAccessBoard);
 
     // logged in user access (user)
-    app.get("/api/user", [authJwt.verifyToken], controller.userBoard);
+    app.get(
+        "/api/user",
+        [authJwt.verifyToken],
+        controller.userBoard
+    );
+
+    // logged in trainer access
+    app.get(
+        "/api/trainer",
+        [authJwt.verifyToken, authJwt.isTrainer],
+        controller.trainerBoard
+    );
+
+    // logged in admin access
+    app.get(
+        "/api/admin",
+        [authJwt.verifyToken, authJwt.isAdmin],
+        controller.adminBoard
+    );
 
     // get all todos associated with the userId
     app.get("/api/user/:userId", [authJwt.verifyToken], controller.getUserTodos);

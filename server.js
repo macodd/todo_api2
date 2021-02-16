@@ -9,6 +9,8 @@ var bcrypt = require('bcryptjs');
 
 const db = require("./models");
 
+const Role = db.role;
+
 const app = express();
 
 // sets the Cors library
@@ -23,6 +25,8 @@ require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 require('./routes/todoList.routes')(app);
 require('./routes/todoListItem.routes')(app);
+require('./routes/email-invite.route')(app);
+require('./routes/new-user.routes')(app);
 
 // sets port and listens for requests
 const PORT = 9000;
@@ -41,19 +45,26 @@ db.sequelize
 // sync user with db
 db.sequelize.sync({ force: true }).then(() => {
    console.log('Database & tables created');
-
-   db.user.create({
-      email: "test@gmail.edu",
-      password: bcrypt.hashSync("abc123", 8)
-   });
-
-   db.todoList.create({
-       name: 'myTodos',
-       userId: 1
-   })
-       .then(() => db.todoList.findAll())
-       .then((todos) => console.log(todos));
+   initial();
 });
+
+// initializes the roles with their respective ids
+function initial() {
+    Role.create({
+        id: 1,
+        name: "user"
+    });
+
+    Role.create({
+        id: 2,
+        name: "trainer"
+    });
+
+    Role.create({
+        id: 3,
+        name: "admin"
+    });
+}
 
 // home route
 app.get("/", function (req, res) {
