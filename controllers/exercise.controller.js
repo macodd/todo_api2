@@ -38,8 +38,8 @@ exports.createExercise = function (req, res) {
             Exercise.create({
                 name: req.body.name,
                 targetWeight: req.body.targetWeight,
-                done: req.body.done,
-                todoListId: workout.id
+                done: false,
+                workoutId: workout.id
             })
             .then(
                 exercise => res.status(200).json(exercise)

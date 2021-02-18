@@ -17,8 +17,10 @@ exports.userBoard = function (req, res) {
                 id: req.params.userId
             },
             include: [
+                db.profile,
                 db.address,
-                db.goal
+                db.goal,
+                db.workout
             ]
         }).then(
             user => {
@@ -45,12 +47,12 @@ exports.userBoard = function (req, res) {
 exports.adminBoard = function (req, res) {
     res.status(200).json({
         message : "Admin Content"
-    })
+    });
 }
 
 // trainer logged in
 exports.trainerBoard = function (req, res) {
     res.status(200).json({
         message : "Trainer Content"
-    })
+    });
 };

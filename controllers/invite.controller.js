@@ -18,7 +18,7 @@ const EMAIL = "no-reply@fitness.fit"
 let MailGenerator = new Mailgen({
     theme: "default",
     product: {
-        name: "Nodemailer",
+        name: "Fitness app",
         link: "https://localhost:3000/"
     }
 });

@@ -14,6 +14,7 @@ const User = db.user;
 const Role = db.role;
 const Address = db.address;
 const Goal = db.goal;
+const Profile = db.profile;
 
 // salt for hashing the password
 const SALT = 8;
@@ -23,12 +24,9 @@ exports.signup = (req, res) => {
 
     // Save user to Database
     User.create({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        dob: req.body.dob,
-        gender: req.body.gender,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, SALT)
+        password: bcrypt.hashSync(req.body.password, SALT),
+        verified: false
     })
     .then((user) => {
         if (req.body.roles) {
@@ -47,12 +45,25 @@ exports.signup = (req, res) => {
             user.setRoles([1]);
         }
 
+        // creates a profile linked to the user id
+        Profile.create({
+            userId: user.id,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            dob: req.body.dob,
+            gender: req.body.gender,
+        }).catch(err => {
+            res.status(400).json({ message: err.message });
+        });
+
+        // creates an address linked to the user id
         Address.create({
             userId: user.id
         }).catch(err => {
-            res.status(500).json({ message: err.message })
+            res.status(400).json({ message: err.message })
         });
 
+        // creates a goal linked to the user id
         Goal.create({
             userId: user.id
         }).catch(err => {
@@ -64,7 +75,7 @@ exports.signup = (req, res) => {
         });
     })
     .catch((err) => {
-        res.status(500).json({ message: err.message })
+        res.status(400).json({ message: err.message })
     });
 }
 
@@ -101,7 +112,7 @@ exports.login = function (req, res) {
 
             // sign in user an assign a payload in seconds
             const token = jwt.sign(
-                {id: user.id},
+                { id: user.id },
                 config.secretAuthKey,
                 {
                     expiresIn: 3600  // 1 hour
@@ -123,7 +134,7 @@ exports.login = function (req, res) {
             });
         })
         .catch((err) => {
-           res.status(500).json({
+           res.status(400).json({
                message: err.message
            })
         });

@@ -1,5 +1,4 @@
-const Sequelize = require('sequelize');
-const { DataTypes } = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 
 const sequelize = new Sequelize('postgres://mcodd:Oakland2021@127.0.0.1:5433/todo');
 
@@ -7,10 +6,11 @@ const sequelize = new Sequelize('postgres://mcodd:Oakland2021@127.0.0.1:5433/tod
 const db = {
     sequelize: sequelize,
     Sequelize: Sequelize,
-    user: require("../models/user.model")(sequelize, DataTypes),
-    role: require("../models/role.model")(sequelize, DataTypes),
-    address: require("../models/address.model")(sequelize, DataTypes),
-    goal: require("../models/goal.model")(sequelize, DataTypes),
+    user: require("./user.model")(sequelize, DataTypes),
+    profile: require("./profile.model")(sequelize, DataTypes),
+    role: require("./role.model")(sequelize, DataTypes),
+    address: require("./address.model")(sequelize, DataTypes),
+    goal: require("./goal.model")(sequelize, DataTypes),
     workout: require("./workout.model")(sequelize, DataTypes),
     exercise: require("./exercise.model")(sequelize, DataTypes),
 }
@@ -22,6 +22,14 @@ db.user.hasOne(db.goal, {
 db.goal.belongsTo(db.user, {
     foreignKey : "userId"
 });
+
+// user profile relation
+db.user.hasOne(db.profile, {
+    onDelete: "CASCADE"
+});
+db.profile.belongsTo(db.user, {
+    foreignKey: "userId"
+})
 
 // one address per user
 db.user.hasOne(db.address, {
